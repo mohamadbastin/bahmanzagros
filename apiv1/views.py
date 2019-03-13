@@ -3,6 +3,8 @@ from rest_framework import viewsets
 from .serializers import *
 from tour.models import *
 from users.models import UserProfile
+
+
 # Create your views here.
 
 
@@ -20,9 +22,12 @@ class TourRegistrationViewSet(viewsets.ModelViewSet):
     queryset = TourRegistration.objects.all()
     serializer_class = TourRegistrationSerializer
 
+    def create(self, request, *args, **kwargs):
+        # do your thing here
+        data = request.data
+        return super().create(request)
+
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
-
-
