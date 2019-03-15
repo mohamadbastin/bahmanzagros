@@ -25,6 +25,13 @@ class TourRegistrationViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         # do your thing here
         data = request.data
+        for i in data["ticket"]:
+            tmp = Ticket(tour_registration=TourRegistration.objects.filter(id=i["tour_registration"]).first(), name=i["name"],
+                         email=i["email"],
+                         phone=i["phone"],
+                         passport_number=i["passport_number"])
+            tmp.save()
+
         return super().create(request)
 
 
