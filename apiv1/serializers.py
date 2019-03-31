@@ -1,6 +1,18 @@
 from rest_framework import serializers
 from tour.models import *
+from django.contrib.auth.models import User
+from users.models import UserProfile
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name']
 
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = UserProfile
+        fields = ['user', 'email', 'phone_number', 'info']
 
 class TourGroupSerializer(serializers.ModelSerializer):
     class Meta:
