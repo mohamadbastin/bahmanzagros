@@ -4,12 +4,25 @@ from rest_framework.generics import ListAPIView
 from .serializers import *
 from tour.models import *
 from users.models import UserProfile
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import RetrieveAPIView
 
 # Create your views here.
 
+class ProfileSerializer(RetrieveAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = ProfileSerializer
+    lookup_field = None
+    def get_queryset(self):
+        profile = self.request.user.user_profile
+        return profile
+    
+    def get_object(self):
+        return self.get_queryset()
 
 class TourGroupViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated, ]
+    
     queryset = TourGroup.objects.all()
     serializer_class = TourGroupSerializer
 
