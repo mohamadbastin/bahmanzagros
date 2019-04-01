@@ -2,6 +2,7 @@
 cse-data
 
 #settings
+settings.py
 
 #server
 nohup.out
