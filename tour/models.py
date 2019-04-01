@@ -39,10 +39,21 @@ class TourRegistration(models.Model):
 
 class Ticket(models.Model):
     tour_registration = models.ForeignKey(TourRegistration, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+
+    national_id = models.CharField(max_length=20, blank=True, null=True)
     passport_number = models.BigIntegerField()
+
+    email = models.CharField(max_length=100)
     phone = models.IntegerField()
+    
+    nationality = models.CharField(max_length=30, blank=True, null=True)
+    city = models.CharField(max_length=30, blank=True, null=True)
+
+    birth_date = models.DateField(blank=True, null=True)
+    description: models.TextField(max_length=500, blank=True, null=True)
+
 
     def __str__(self):
         return str(self.tour_registration)
