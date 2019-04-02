@@ -4,9 +4,10 @@ from .serializers import *
 from tour.models import *
 from users.models import UserProfile
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.http import QueryDict
 # Create your views here.
 
 
@@ -50,12 +51,36 @@ class TourVariantRegistrationList(GenericAPIView):
             v = Tour.objects.get(pk=v_id)
             v_data = TourSerializer(instance=v).data
 
-            registrations = TourRegistration.objects.filter(tour=v,profile=profile)
+            registrations = TourRegistration.objects.filter(tour=v,profile=profile).order_by('-pk')
             registrations_data = TourRegistrationSerializer(registrations, many=True).data
 
             return Response({"variant": v_data, "registrations": registrations_data})
         except:
             return Response({"Error": "No data"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class TourRegistrationCreate(GenericAPIView):
+    serializer_class = TourRegistrationSerializer
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        profile = request.user.user_profile
+        data = {}
+        data['tour'] = request.data.get('tour', None)
+        data['title'] = request.data.get('title', "")
+        data['group'] = request.data.get('group', False)
+        data['is_persian'] = request.data.get('is_persian', False)
+
+        data['profile'] = profile.pk
+        result = self.serializer_class(data=data)
+
+        if result.is_valid():
+            result.save()
+            return Response({"Success": "Done"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"Error": result.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ProfileSerializer(RetrieveAPIView):
     permission_classes = [IsAuthenticated, ]

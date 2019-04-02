@@ -16,5 +16,6 @@ urlpatterns = [
     path("profile/detail/", ProfileSerializer.as_view()),
     path("tour-groups/<int:tour_id>/variants/", TourGroupVarientList.as_view()),
     path("tour-variants/<int:variant_id>/registrations/", TourVariantRegistrationList.as_view()),
+    path("tour-variants/registrations/create/", TourRegistrationCreate.as_view())
 ]
 
