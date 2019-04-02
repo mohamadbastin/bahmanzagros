@@ -22,6 +22,9 @@ class TourGroupSerializer(serializers.ModelSerializer):
 
 
 class TourSerializer(serializers.ModelSerializer):
+
+    tour_group = TourGroupSerializer()
+
     class Meta:
         model = Tour
 

@@ -40,7 +40,22 @@ class TourGroupVarientList(GenericAPIView):
             return Response({"Error": "No data"}, status=status.HTTP_404_NOT_FOUND)
 
 
+class TourVariantRegistrationList(GenericAPIView):
+    permission_classes = [IsAuthenticated, ]
 
+    def get(self, request, *args, **kwargs):
+        v_id = kwargs['variant_id']
+        try:
+            profile = request.user.user_profile
+            v = Tour.objects.get(pk=v_id)
+            v_data = TourSerializer(instance=v).data
+
+            registrations = TourRegistration.objects.filter(tour=v,profile=profile)
+            registrations_data = TourRegistrationSerializer(registrations, many=True).data
+
+            return Response({"variant": v_data, "registrations": registrations_data})
+        except:
+            return Response({"Error": "No data"}, status=status.HTTP_404_NOT_FOUND)
 
 class ProfileSerializer(RetrieveAPIView):
     permission_classes = [IsAuthenticated, ]
