@@ -18,8 +18,8 @@ class TourGroup(models.Model):
 
 class Tour(models.Model):
     tour_group = models.ForeignKey(TourGroup, on_delete=models.CASCADE)
-    start = models.DateTimeField()
-    end = models.DateTimeField()
+    start = models.DateField()
+    end = models.DateField()
     price = models.CharField(max_length=50)
 
     def __str__(self):
