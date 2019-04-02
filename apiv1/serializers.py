@@ -31,11 +31,10 @@ class TourSerializer(serializers.ModelSerializer):
 class TourRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = TourRegistration
-
-        fields = ['pk', 'tour', 'profile', 'group', 'quantity', 'date_registered']
-
+        fields = ['pk', 'tour', 'title','profile', 'group', 'quantity', 'date_registered', 'is_persian']
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['pk', 'tour_registration', 'name', 'email', 'phone', 'passport_number']
+        fields = ['pk', 'tour_registration', 'first_name', 'email', 'phone', 'passport_number',
+        'last_name', 'national_id', 'nationality', 'city', 'birth_date','description', 'is_persian']

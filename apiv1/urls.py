@@ -12,5 +12,6 @@ router.register("ticket", TicketViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("profile/detail/", ProfileSerializer.as_view()),
+    path("tour-registration/<int:id>/tickets/", GetTourRegistrationTikets.as_view()),
 ]
 

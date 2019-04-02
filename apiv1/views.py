@@ -4,9 +4,23 @@ from .serializers import *
 from tour.models import *
 from users.models import UserProfile
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView
 
 # Create your views here.
+
+
+class GetTourRegistrationTikets(ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = TicketSerializer
+
+    def get_queryset(self):
+        tr_id = self.kwargs['id']
+        try:
+            tr = TourRegistration.objects.get(pk=tr_id)
+            return Ticket.objects.filter(tour_registration=tr)
+        except:
+            print("hrerer", tr_id)
+            return None
 
 class ProfileSerializer(RetrieveAPIView):
     permission_classes = [IsAuthenticated, ]
@@ -34,19 +48,6 @@ class TourViewSet(viewsets.ModelViewSet):
 class TourRegistrationViewSet(viewsets.ModelViewSet):
     queryset = TourRegistration.objects.all()
     serializer_class = TourRegistrationSerializer
-
-    def create(self, request, *args, **kwargs):
-        # do your thing here
-        data = request.data
-        for i in data["ticket"]:
-            tmp = Ticket(tour_registration=TourRegistration.objects.filter(id=i["tour_registration"]).first(), name=i["name"],
-                         email=i["email"],
-                         phone=i["phone"],
-                         passport_number=i["passport_number"])
-            tmp.save()
-
-        return super().create(request)
-
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()

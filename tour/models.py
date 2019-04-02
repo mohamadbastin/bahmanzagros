@@ -27,12 +27,15 @@ class Tour(models.Model):
 
 
 class TourRegistration(models.Model):
+    title = models.CharField(max_length=255)
     tour = models.ForeignKey(Tour, related_name="tour_registrations", on_delete=models.CASCADE)
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     group = models.BooleanField()
     quantity = models.IntegerField()
     date_registered = models.DateTimeField(auto_now_add=True)
-
+    
+    is_persian = models.BooleanField(default=True)
+    
     def __str__(self):
         return str(self.tour) + " " + str(self.profile)
 
@@ -43,7 +46,7 @@ class Ticket(models.Model):
     last_name = models.CharField(max_length=100)
 
     national_id = models.CharField(max_length=20, blank=True, null=True)
-    passport_number = models.BigIntegerField()
+    passport_number = models.BigIntegerField(blank=True, null=True)
 
     email = models.CharField(max_length=100)
     phone = models.IntegerField()
@@ -52,8 +55,9 @@ class Ticket(models.Model):
     city = models.CharField(max_length=30, blank=True, null=True)
 
     birth_date = models.DateField(blank=True, null=True)
-    description: models.TextField(max_length=500, blank=True, null=True)
-
+    description= models.TextField(max_length=500, blank=True, null=True)
+    
+    is_persian = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.tour_registration)
