@@ -4,6 +4,9 @@ cse-data
 #settings
 settings.py
 
+.venv
+.idea
+
 #server
 nohup.out
 csesa.sock

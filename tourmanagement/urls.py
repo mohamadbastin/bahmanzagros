@@ -23,19 +23,13 @@ from . import views
 
 from rest_framework.authtoken import views
 
-
 urlpatterns = [
-  path('admin/', admin.site.urls),
-  path('api/v1/users/', include('users.urls', namespace='users-api-v1')),
+    path('admin/', admin.site.urls),
+    path('api/v1/users/', include('users.urls', namespace='users-api-v1')),
     path('api/v2/', include('apiv1.urls')),
-<<<<<<< HEAD
-=======
     path('api-token-auth/', views.obtain_auth_token)
->>>>>>> 2067a9ff52af1e1f630706d9f0bb3c323bca6988
 
 ]
-
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

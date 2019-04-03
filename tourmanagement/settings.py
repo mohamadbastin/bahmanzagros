@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'sorl.thumbnail',
     'sorl_thumbnail_serializer',
+    'django_countries',
     'users',
     'tour',
     'apiv1',
