@@ -55,7 +55,7 @@ class Ticket(models.Model):
     passport_number = models.BigIntegerField(blank=True, null=True)
 
     email = models.CharField(max_length=100)
-    phone = models.IntegerField()
+    phone = models.CharField(max_length=20)
     
     nationality = models.CharField(max_length=30, blank=True, null=True)
     city = models.CharField(max_length=30, blank=True, null=True)

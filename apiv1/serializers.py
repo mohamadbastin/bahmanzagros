@@ -32,11 +32,16 @@ class TourSerializer(serializers.ModelSerializer):
 
 
 class TourRegistrationSerializer(serializers.ModelSerializer):
-    tour = TourSerializer()
+    
     class Meta:
         model = TourRegistration
         fields = ['pk', 'tour', 'title','profile', 'group', 'count','quantity', 'is_persian']
         
+class TourRegistrationSerializerGet(serializers.ModelSerializer):
+    tour = TourSerializer()
+    class Meta:
+        model = TourRegistration
+        fields = ['pk', 'tour', 'title','profile', 'group', 'count','quantity', 'is_persian']
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:

@@ -67,7 +67,7 @@ class TourRegistrationTicketsList(GenericAPIView):
 
         try:
             tour_registration = TourRegistration.objects.get(pk=tour_registration_id)
-            tour_reg_data = TourRegistrationSerializer(tour_registration).data
+            tour_reg_data = TourRegistrationSerializerGet(tour_registration).data
             tickets = Ticket.objects.filter(tour_registration=tour_registration)
             tickets_data = TicketSerializer(tickets, many=True).data
             return Response({'tour': tour_reg_data, 
