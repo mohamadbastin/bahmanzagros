@@ -31,13 +31,15 @@ class TourRegistration(models.Model):
     tour = models.ForeignKey(Tour, related_name="tour_registrations", on_delete=models.CASCADE)
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     group = models.BooleanField()
-    
+    count = models.IntegerField(blank=True, null=True)
     date_registered = models.DateTimeField(auto_now_add=True)
     
     is_persian = models.BooleanField(default=True)
     
     @property
     def quantity(self):
+        if self.group:
+            return self.count
         return 0
 
     def __str__(self):

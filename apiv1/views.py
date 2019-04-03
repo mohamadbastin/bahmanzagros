@@ -59,6 +59,22 @@ class TourVariantRegistrationList(GenericAPIView):
             return Response({"Error": "No data"}, status=status.HTTP_404_NOT_FOUND)
 
 
+class TourRegistrationTicketsList(GenericAPIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        tour_registration_id = kwargs['tour_reg_id']
+
+        try:
+            tour_registration = TourRegistration.objects.get(pk=tour_registration_id)
+            tour_reg_data = TourRegistrationSerializer(tour_registration).data
+            tickets = Ticket.objects.filter(tour_registration=tour_registration)
+            tickets_data = TicketSerializer(tickets, many=True).data
+            return Response({'tour': tour_reg_data, 
+            'tickets': tickets_data})
+        except TourRegistration.DoesNotExist:
+            return Response({"Error": "Tour registration not found"}, status=status.HTTP_404_NOT_FOUND)
+            
 
 class TourRegistrationCreate(GenericAPIView):
     serializer_class = TourRegistrationSerializer
@@ -71,7 +87,7 @@ class TourRegistrationCreate(GenericAPIView):
         data['title'] = request.data.get('title', "")
         data['group'] = request.data.get('group', False)
         data['is_persian'] = request.data.get('is_persian', False)
-
+        data['count'] = request.data.get('count', None)
         data['profile'] = profile.pk
         result = self.serializer_class(data=data)
 
