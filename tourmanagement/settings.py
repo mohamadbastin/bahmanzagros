@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'users',
     'tour',
     'rest_framework.authtoken',
-        'corsheaders'
+    'corsheaders'
 
 
 ]
