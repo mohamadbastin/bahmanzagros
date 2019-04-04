@@ -40,25 +40,25 @@ class TourRegistration(models.Model):
     def quantity(self):
         if self.group:
             return self.count
-        return 0
+        return len(self.tickets.all())
 
     def __str__(self):
-        return str(self.tour) + " " + str(self.profile)
+        return str(self.title)
 
 
 class Ticket(models.Model):
-    tour_registration = models.ForeignKey(TourRegistration, on_delete=models.CASCADE)
+    tour_registration = models.ForeignKey(TourRegistration, on_delete=models.CASCADE, related_name="tickets")
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
     national_id = models.CharField(max_length=20, blank=True, null=True)
-    passport_number = models.BigIntegerField(blank=True, null=True)
+    passport_number = models.CharField(max_length=20, blank=True, null=True)
 
     email = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
     
-    nationality = models.CharField(max_length=30, blank=True, null=True)
-    city = models.CharField(max_length=30, blank=True, null=True)
+    nationality = models.CharField(max_length=30, blank=True, null=True, default="-")
+    city = models.CharField(max_length=30, blank=True, null=True, default="-")
 
     birth_date = models.DateField(blank=True, null=True)
     description= models.TextField(max_length=500, blank=True, null=True)
