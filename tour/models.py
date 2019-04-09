@@ -18,13 +18,21 @@ class TourGroup(models.Model):
 
 class Tour(models.Model):
     tour_group = models.ForeignKey(TourGroup, on_delete=models.CASCADE)
-    start = models.DateField()
-    end = models.DateField()
+    title = models.CharField(max_length=50)
+    description = models.TextField()
+    start = models.DateField(null=True, blank=True)
+    end = models.DateField(null=True, blank=True)
     price = models.CharField(max_length=50)
 
-    def __str__(self):
-        return str(self.tour_group.title) + ' ' + str(self.start) + ' TO' + str(self.end)
+    @property
+    def is_daily(self):
+        return self.start is None and self.end is None
 
+    def __str__(self):
+        if self.start is None and self.end is None:
+            return str(self.tour_group.title) + ' ' + 'Daily Tour'
+        else:
+            return str(self.tour_group.title) + ' ' + str(self.start) + ' TO ' + str(self.end)
 
 class TourRegistration(models.Model):
     title = models.CharField(max_length=255)
