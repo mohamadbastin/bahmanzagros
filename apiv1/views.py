@@ -76,26 +76,38 @@ class TourRegistrationTicketsList(GenericAPIView):
             return Response({"Error": "Tour registration not found"}, status=status.HTTP_404_NOT_FOUND)
             
 
-class TourRegistrationCreate(GenericAPIView):
+class TourRegistrationCreate(CreateAPIView):
     serializer_class = TourRegistrationSerializer
     permission_classes = [IsAuthenticated, ]
 
-    def post(self, request, *args, **kwargs):
-        profile = request.user.user_profile
-        data = {}
-        data['tour'] = request.data.get('tour', None)
-        data['title'] = request.data.get('title', "")
-        data['group'] = request.data.get('group', False)
-        data['is_persian'] = request.data.get('is_persian', False)
-        data['count'] = request.data.get('count', None)
-        data['profile'] = profile.pk
-        result = self.serializer_class(data=data)
+    def perform_create(self, serializer):
+        serializer.save(data=self.request.data, context={'profile': self.request.user.user_profile})
 
-        if result.is_valid():
-            result.save()
-            return Response({"Success": "Done"}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({"Error": result.errors}, status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     profile = request.user.user_profile
+
+        # data = {}
+        # data['title'] = request.data.title
+        # data['tour'] = request.data.tour
+        # data['group'] = request.data.group
+        # data['date'] = request.data.date
+        # data['is_persian'] = request.data.is_persian
+        # data['count'] = request.data.count
+        # data['profile'] = profile
+
+
+
+
+
+    # def post(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #
+    #     if serializer.is_valid():
+    #         return Response("goopd")
+    #     else:
+    #         return Response("Error")
+    #
 
 
 class ProfileSerializer(RetrieveAPIView):

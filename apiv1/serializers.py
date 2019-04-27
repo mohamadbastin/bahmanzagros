@@ -37,7 +37,15 @@ class TourSerializer(serializers.ModelSerializer):
 class TourRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = TourRegistration
-        fields = ['pk', 'tour', 'title', 'profile', 'group', 'count', 'quantity', 'is_persian']
+        fields = ['pk', 'tour', 'title', 'date', 'group', 'count', 'quantity', 'is_persian']
+
+    def create(self, validated_data):
+        validated_data.pop('data')
+        ct = validated_data.pop('context')
+        new_tr = TourRegistration(**validated_data)
+        new_tr.profile = ct['profile']
+        new_tr.save()
+        return new_tr
 
 
 class TourRegistrationSerializerGet(serializers.ModelSerializer):
@@ -45,11 +53,12 @@ class TourRegistrationSerializerGet(serializers.ModelSerializer):
 
     class Meta:
         model = TourRegistration
-        fields = ['pk', 'tour', 'title', 'profile', 'group', 'count', 'quantity', 'is_persian']
+        fields = ['pk', 'tour', 'title', 'date', 'profile', 'group', 'count', 'quantity', 'is_persian']
 
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['pk', 'tour_registration', 'first_name', 'email', 'phone', 'passport_number',
-                  'last_name', 'national_id', 'nationality', 'city', 'birth_date', 'description', 'is_persian']
+        fields = ['pk', 'tour_registration', 'first_name', 'email', 'phone', 'address', 'passport_number',
+                  'last_name', 'national_id', 'nationality', 'city', 'address', 'birth_date', 'description',
+                  'is_persian']
