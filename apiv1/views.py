@@ -8,6 +8,8 @@ from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import QueryDict
+
+
 # Create your views here.
 
 
@@ -22,6 +24,7 @@ class GetTourRegistrationTikets(ListAPIView):
             return Ticket.objects.filter(tour_registration=tr)
         except:
             return None
+
 
 class TourGroupVarientList(GenericAPIView):
     permission_classes = [IsAuthenticated, ]
@@ -51,7 +54,7 @@ class TourVariantRegistrationList(GenericAPIView):
             v = Tour.objects.get(pk=v_id)
             v_data = TourSerializer(instance=v).data
 
-            registrations = TourRegistration.objects.filter(tour=v,profile=profile).order_by('-pk')
+            registrations = TourRegistration.objects.filter(tour=v, profile=profile).order_by('-pk')
             registrations_data = TourRegistrationSerializer(registrations, many=True).data
 
             return Response({"variant": v_data, "registrations": registrations_data})
@@ -70,11 +73,11 @@ class TourRegistrationTicketsList(GenericAPIView):
             tour_reg_data = TourRegistrationSerializerGet(tour_registration).data
             tickets = Ticket.objects.filter(tour_registration=tour_registration).order_by('-pk')
             tickets_data = TicketSerializer(tickets, many=True).data
-            return Response({'tour': tour_reg_data, 
-            'tickets': tickets_data})
+            return Response({'tour': tour_reg_data,
+                             'tickets': tickets_data})
         except TourRegistration.DoesNotExist:
             return Response({"Error": "Tour registration not found"}, status=status.HTTP_404_NOT_FOUND)
-            
+
 
 class TourRegistrationCreate(CreateAPIView):
     serializer_class = TourRegistrationSerializer
@@ -87,18 +90,14 @@ class TourRegistrationCreate(CreateAPIView):
     #     serializer = self.get_serializer(data=request.data)
     #     profile = request.user.user_profile
 
-        # data = {}
-        # data['title'] = request.data.title
-        # data['tour'] = request.data.tour
-        # data['group'] = request.data.group
-        # data['date'] = request.data.date
-        # data['is_persian'] = request.data.is_persian
-        # data['count'] = request.data.count
-        # data['profile'] = profile
-
-
-
-
+    # data = {}
+    # data['title'] = request.data.title
+    # data['tour'] = request.data.tour
+    # data['group'] = request.data.group
+    # data['date'] = request.data.date
+    # data['is_persian'] = request.data.is_persian
+    # data['count'] = request.data.count
+    # data['profile'] = profile
 
     # def post(self, request, *args, **kwargs):
     #     serializer = self.get_serializer(data=request.data)
@@ -107,23 +106,24 @@ class TourRegistrationCreate(CreateAPIView):
     #         return Response("goopd")
     #     else:
     #         return Response("Error")
-    #
 
 
 class ProfileSerializer(RetrieveAPIView):
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
     lookup_field = None
+
     def get_queryset(self):
         profile = self.request.user.user_profile
         return profile
-    
+
     def get_object(self):
         return self.get_queryset()
 
+
 class TourGroupViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
-    
+
     queryset = TourGroup.objects.all()
     serializer_class = TourGroupSerializer
 
@@ -136,6 +136,7 @@ class TourViewSet(viewsets.ModelViewSet):
 class TourRegistrationViewSet(viewsets.ModelViewSet):
     queryset = TourRegistration.objects.all()
     serializer_class = TourRegistrationSerializer
+
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()

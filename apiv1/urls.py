@@ -10,7 +10,6 @@ router.register("ticket", TicketViewSet)
 # router.register("profiletour", ProfileTourViewSet)
 
 
-
 urlpatterns = [
     path("", include(router.urls)),
     path("profile/detail/", ProfileSerializer.as_view()),
@@ -19,4 +18,3 @@ urlpatterns = [
     path("tour-variants/registrations/create/", TourRegistrationCreate.as_view()),
     path("tour-registrations/<int:tour_reg_id>/tickets/", TourRegistrationTicketsList.as_view()),
 ]
-

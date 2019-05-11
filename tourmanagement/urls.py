@@ -17,22 +17,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
 from django.urls import path
-
 from tourmanagement import settings
 from . import views
 
 from rest_framework.authtoken import views
 
-
 urlpatterns = [
-  path('admin/', admin.site.urls),
-  path('api/v1/users/', include('users.urls', namespace='users-api-v1')),
+    path('admin/', admin.site.urls),
+    path('api/v1/users/', include('users.urls', namespace='users-api-v1')),
     path('api/v2/', include('apiv1.urls')),
-    path('api-token-auth/', views.obtain_auth_token)
+    path('api-token-auth/', views.obtain_auth_token),
 
 ]
-
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

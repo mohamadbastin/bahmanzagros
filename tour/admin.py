@@ -11,7 +11,9 @@ class TicketAdmin(admin.ModelAdmin):
 
 class TourRegistrationAdmin(admin.ModelAdmin):
     list_display = ('pk', 'tour', 'profile', 'date', 'count', 'price', 'verified')
-    list_display_links = ['tour']
+    list_display_links = ['tour',]
+    list_filter = ['date', ]
+    search_fields = ['date', ]
     list_editable = ('price', 'verified')
 
 
