@@ -11,6 +11,7 @@ Django==2.1.7
 django-cors-headers==2.4.0
 django-enumfields==0.10.1
 django-jalali==3.1.0
+django-jet==1.0.8
 django-rest-framework==0.1.0
 django-rest-passwordreset==0.9.5
 djangorestframework==3.8.2

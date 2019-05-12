@@ -23,6 +23,7 @@ from . import views
 from rest_framework.authtoken import views
 
 urlpatterns = [
+    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('admin/', admin.site.urls),
     path('api/v1/users/', include('users.urls', namespace='users-api-v1')),
     path('api/v2/', include('apiv1.urls')),
