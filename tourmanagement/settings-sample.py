@@ -45,7 +45,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-
 TELEGRAM_BOT_TOKEN = ""
 SEND_TO_CHAT_ID = ""
 PROXY = ""
@@ -55,13 +54,14 @@ AUTH_USER_MODEL = 'auth.User'
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django_jalali',
     'rest_framework',
     'django_rest_passwordreset',
     'sorl.thumbnail',
@@ -69,8 +69,7 @@ INSTALLED_APPS = [
     'users',
     'tour',
     'rest_framework.authtoken',
-    'corsheaders'
-
+    'corsheaders',
 
 ]
 
@@ -94,14 +93,15 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR,
-            os.path.join(BASE_DIR, 'templates'),  # If i leave both or just comment one one out I still get the same error
+            os.path.join(BASE_DIR, 'templates'),
+            # If i leave both or just comment one one out I still get the same error
             'tmws.tmws.templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.debug',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -132,16 +132,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'GMT'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -150,3 +149,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'Bahmanmardanloo27@gmail.com'
+EMAIL_HOST_PASSWORD = 'Bahman12345'
+EMAIL_PORT = 587

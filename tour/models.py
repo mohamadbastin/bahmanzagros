@@ -29,6 +29,10 @@ class Tour(models.Model):
     price = models.TextField()
 
     @property
+    def tour_gp_name(self):
+        return str(self.tour_group.title)
+
+    @property
     def is_daily(self):
         return self.start is None and self.end is None
 
@@ -44,7 +48,7 @@ class TourRegistration(models.Model):
     tour = models.ForeignKey(Tour, related_name="tour_registrations", on_delete=models.CASCADE)
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     group = models.BooleanField()
-    count = models.IntegerField(blank=True, null=True)
+    count = models.PositiveIntegerField(blank=True, null=True)
     date = jmodels.jDateField(blank=True, null=True)
     #date = models.CharField(blank=True, null=True, max_length=10)
     date_registered = models.DateTimeField(auto_now_add=True)
