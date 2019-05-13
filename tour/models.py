@@ -94,7 +94,16 @@ class Ticket(models.Model):
 @receiver(post_save, sender=Ticket, dispatch_uid="send_mail")
 def send_mail(sender, instance, **kwargs):
     if instance.verified:
-        email = EmailMessage('oumad', 'hello you bought a ticket! good for you. :| ', to=[instance.email])
+        email = EmailMessage('Bahman Tours | Ticket Verified',
+                             'Your ticket is verified:<br>'
+                             '<table>'
+                             '<tr>'
+                             '<td>'
+                             'First Name'
+                             '</td>'
+                             '</tr>'
+                             '</table>',
+                             to=[instance.email])
         email.send()
     else:
         pass
