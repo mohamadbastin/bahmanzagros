@@ -36,11 +36,13 @@ class TourRegistrationAdmin(admin.ModelAdmin):
 
     list_display_links = ['tour',]
     list_filter = [('date', DateRangeFilter), 'profile__user__username']
-    search_fields = ['date', ]
     list_editable = ('count', 'price', 'verified')
 
+class TourAdmin(admin.ModelAdmin):
+    list_filter = ['title', 'tour_group', 'start', 'end', 'price']
+
 admin.site.register(TourRegistration, TourRegistrationAdmin)
-admin.site.register(Tour)
+admin.site.register(Tour, TourAdmin)
 admin.site.register(TourGroup)
 admin.site.register(Ticket, TicketAdmin)
 # admin.site.unregister(Token)
