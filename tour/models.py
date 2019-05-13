@@ -50,7 +50,7 @@ class TourRegistration(models.Model):
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     group = models.BooleanField()
     count = models.PositiveIntegerField(blank=True, null=True)
-    date = jmodels.jDateField(blank=True, null=True)
+    date = jmodels.jDateField()
     #date = models.CharField(blank=True, null=True, max_length=10)
     date_registered = models.DateTimeField(auto_now_add=True)
     price = models.CharField(max_length=100, blank=True, null=True)
