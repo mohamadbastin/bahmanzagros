@@ -26,7 +26,7 @@ class TourRegistrationAdmin(admin.ModelAdmin):
 
 
     list_display_links = ['tour',]
-    list_filter = [('date', DateRangeFilter), 'profile__user__username']
+    list_filter = [('date', DateRangeFilter), 'profile__user__username', 'verified']
     list_editable = ('count', 'price', 'verified')
 
 class TourAdmin(admin.ModelAdmin):
