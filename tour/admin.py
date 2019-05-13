@@ -9,10 +9,8 @@ class TicketAdmin(admin.ModelAdmin):
     list_editable = ('verified',)
 
 
-
-
     def tour(self, instance):
-        return instance.tour_registration.tour.title
+        return instance.tour_registration.tour.tour_group.title
 
     def date(self, instance):
         return instance.tour_registration.date
