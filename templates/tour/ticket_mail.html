@@ -120,7 +120,17 @@
     </tr>
     {% endif %}
 
-<tr>
+    {% if ticket.tour_registration.group %}
+        <tr>
+        <td>
+            تعداد
+        </td>
+        <td>
+            {{ ticket.tour_registration.quantity }}
+        </td>
+        </tr>
+    {%  endif %}
+    <tr>
         <td>
             Birth Date:
         </td>
