@@ -4,7 +4,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from users.models import UserProfile
 from django_jalali.db import models as jmodels
-from django.core.mail import EmailMessage
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 
 # Create your models here.
@@ -40,7 +41,7 @@ class Tour(models.Model):
         if self.start is None and self.end is None:
             return str(self.tour_group.title) + ' ' + 'Daily Tour'
         else:
-            return str(self.tour_group.title) + ' ' + str(self.start) + ' TO ' + str(self.end)
+            return str(self.tour_group.title)
 
 
 class TourRegistration(models.Model):
@@ -92,18 +93,16 @@ class Ticket(models.Model):
 
 
 @receiver(post_save, sender=Ticket, dispatch_uid="send_mail")
-def send_mail(sender, instance, **kwargs):
-    if instance.verified:
-        email = EmailMessage('Bahman Tours | Ticket Verified',
-                             'Your ticket is verified:<br>'
-                             '<table>'
-                             '<tr>'
-                             '<td>'
-                             'First Name'
-                             '</td>'
-                             '</tr>'
-                             '</table>',
-                             to=[instance.email])
-        email.send()
-    else:
-        pass
+def send_mail_verif(sender, instance, **kwargs):
+
+    msg_html = render_to_string('templates/tour/ticket_mail.html', {'ticket': instance})
+    msg_plain = render_to_string('tour/ticket_mail.html', {'ticket': instance})
+
+    send_mail(
+        subject='Bahman Tours | Ticket Verification',
+        message=msg_plain,
+        html_message=msg_html,
+        from_email='bahmanmardanloo27@gmail.com',
+        recipient_list=[instance.email],
+        fail_silently=False,
+    )

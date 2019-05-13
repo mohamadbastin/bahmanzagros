@@ -24,14 +24,7 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 class TourRegistrationAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'tour', 'tour_start', 'tour_end','profile', 'count', 'price', 'profile', 'verified')
-
-    def tour_start(self, instance):
-        return instance.tour.start
-
-    def tour_end(self, instance):
-        return instance.tour.end
-
+    list_display = ('pk', 'tour', 'date', 'profile', 'count', 'price', 'profile', 'verified')
 
 
     list_display_links = ['tour',]

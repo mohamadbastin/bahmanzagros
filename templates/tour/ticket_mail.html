@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+
+<h1>
+    Your Ticket Is Verified
+</h1>
+
+<h2>
+    Tour:
+</h2>
+<h3>
+    {{ ticket.tour_registration.tour.tour_group.title }}
+</h3>
+
+<h2>
+    Date:
+</h2>
+<h3>
+    {{ ticket.tour_registration.date }}
+</h3>
+
+
+<h1>
+    Ticket Detail
+</h1>
+
+<table>
+    <tbody>
+
+    <tr>
+        <td>
+            First Name:
+        </td>
+        <td>
+            {{ ticket.first_name }}
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            Last Name:
+        </td>
+        <td>
+            {{ ticket.last_name }}
+        </td>
+    </tr>
+
+        <tr>
+        <td>
+            Email:
+        </td>
+        <td>
+            {{ ticket.email }}
+        </td>
+    </tr>
+
+
+        <tr>
+        <td>
+            Phone:
+        </td>
+        <td>
+            {{ ticket.phone }}
+        </td>
+    </tr>
+
+
+        <tr>
+        <td>
+            Address:
+        </td>
+        <td>
+            {{ ticket.address }}
+        </td>
+    </tr>
+
+    {% if ticket.is_persian %}
+    <tr>
+        <td>
+            National ID:
+        </td>
+        <td>
+            {{ ticket.national_id }}
+        </td>
+    </tr>
+
+        <tr>
+        <td>
+            City:
+        </td>
+        <td>
+            {{ ticket.city }}
+        </td>
+    </tr>
+
+    {% else %}
+        <tr>
+        <td>
+            Passport Number:
+        </td>
+        <td>
+            {{ ticket.passport_number }}
+        </td>
+    </tr>
+
+        <tr>
+        <td>
+            Nationality:
+        </td>
+        <td>
+            {{ ticket.nationality }}
+        </td>
+    </tr>
+    {% endif %}
+
+<tr>
+        <td>
+            Birth Date:
+        </td>
+        <td>
+            {{ ticket.birth_date }}
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
