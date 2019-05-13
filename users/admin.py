@@ -4,10 +4,9 @@ from django.contrib import admin
 
 # admin.site.unregister(Token)
 # Register your models here.
+from django.forms import forms
+
 from users.models import UserProfile
 from django.contrib.auth.models import User, Group
 
-
 admin.site.register(UserProfile)
-admin.site.unregister(User)
-admin.site.unregister(Group)
