@@ -33,6 +33,7 @@ class TourRegistrationAdmin(admin.ModelAdmin):
 
 class TourAdmin(admin.ModelAdmin):
     list_filter = ['title', 'tour_group', 'start', 'end', 'price']
+    list_display = ['title', 'tour_group', 'start', 'end', 'price']
 
 admin.site.register(TourRegistration, TourRegistrationAdmin)
 admin.site.register(Tour, TourAdmin)
