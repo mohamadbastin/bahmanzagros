@@ -31,7 +31,7 @@ class TourSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tour
 
-        fields = ['pk', 'is_daily', 'tour_group', 'start', 'description', 'end', 'price']
+        fields = ['pk', 'is_daily', 'title', 'tour_group', 'start', 'description', 'end', 'price']
 
 
 class TourRegistrationSerializer(serializers.ModelSerializer):

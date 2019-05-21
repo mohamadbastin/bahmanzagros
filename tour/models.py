@@ -25,8 +25,8 @@ class Tour(models.Model):
     tour_group = models.ForeignKey(TourGroup, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.TextField()
-    start = jmodels.jDateField(null=True, blank=True)
-    end = jmodels.jDateField(null=True, blank=True)
+    start = models.DateField(null=True, blank=True)
+    end = models.DateField(null=True, blank=True)
     price = models.TextField()
 
     @property
@@ -50,9 +50,7 @@ class TourRegistration(models.Model):
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     group = models.BooleanField()
     count = models.PositiveIntegerField(blank=True, null=True)
-    date = jmodels.jDateField()
-    #date = models.CharField(blank=True, null=True, max_length=10)
-    date_registered = models.DateTimeField(auto_now_add=True)
+    date = models.DateField()
     price = models.CharField(max_length=100, blank=True, null=True)
     is_persian = models.BooleanField(default=True)
     verified = models.BooleanField(default=False)
