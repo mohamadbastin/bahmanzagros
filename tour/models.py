@@ -64,6 +64,36 @@ class TourRegistration(models.Model):
     def __str__(self):
         return str(self.pk)
 
+@receiver(post_save, sender=TourRegistration)
+def tour_reg_post_save(sender, instance, created, **kwargs):
+    try:
+        log = instance.log
+    except Log.DoesNotExist:
+        log = Log()
+
+        log.profile = profile=instance.profile,
+        log.tour_reg = tour_reg=instance,
+        log.tour_title = tour_title=instance.tour.tour_group.title,
+        log.count = instance.quantity
+        log.is_persian = instance.is_persian
+        log.price = instance.price
+        log.status = instance.status
+        log.verified_count = instance
+
+
+class Log(models.Model):
+    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="log")
+    tour_reg = models.OneToOneField(TourRegistration, on_delete=models.SET_NULL, null=True, blank=True, related_name="log")
+    tour_title = models.CharField(max_length=255)
+    added_date = models.DateField(auto_now_add=True)
+    count = models.PositiveIntegerField(default=0)
+    is_persian = models.BooleanField(default=True)
+    price = models.CharField(max_length=255)
+    status = models.BooleanField(default=False)
+
+    verified_count = models.PositiveIntegerField(default=0)
+    verified_price = models.CharField(max_length=255)
+
 
 class Ticket(models.Model):
     tour_registration = models.ForeignKey(TourRegistration, on_delete=models.CASCADE, related_name="tickets")

@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+
+from tourmanagement import settings
 from .serializers import *
 from tour.models import *
 from users.models import UserProfile
@@ -8,7 +10,7 @@ from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import QueryDict
-
+from django.utils import timezone
 
 # Create your views here.
 
@@ -36,11 +38,27 @@ class TourGroupVarientList(GenericAPIView):
             tgp_data = TourGroupSerializer(instance=tgp).data
             tgp_data['image'] = "http://" + request.META['HTTP_HOST'] + tgp_data['image']
 
-            variants = Tour.objects.filter(tour_group=tgp)
+            now = timezone.now().date()
+
+            tmpvariants = Tour.objects.filter(tour_group=tgp)
+
+            variants = []
+
+            for variant in tmpvariants:
+                if not variant.end:
+                    variants += [variant,]
+                elif variant.end >= now:
+                    variants += [variant,]
+
+
             variants_data = TourSerializer(variants, many=True).data
 
             return Response({"tour_group": tgp_data, "variants": variants_data})
         except:
+
+            if settings.DEBUG:
+                raise
+
             return Response({"Error": "No data"}, status=status.HTTP_404_NOT_FOUND)
 
 
@@ -124,7 +142,7 @@ class ProfileSerializer(RetrieveAPIView):
 class TourGroupViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
 
-    queryset = TourGroup.objects.all()
+    queryset = TourGroup.objects.all().order_by('-pk')
     serializer_class = TourGroupSerializer
 
 
