@@ -53,7 +53,7 @@ class TourRegistrationSerializerGet(serializers.ModelSerializer):
 
     class Meta:
         model = TourRegistration
-        fields = ['pk', 'tour', 'title', 'date', 'profile', 'group', 'count', 'quantity', 'is_persian']
+        fields = ['pk', 'tour', 'title', 'tour_group_title', 'verified_count','verified_price','price','verified', 'date', 'profile', 'group', 'count', 'quantity', 'is_persian']
 
 
 class TicketSerializer(serializers.ModelSerializer):

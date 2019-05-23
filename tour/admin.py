@@ -4,13 +4,16 @@ from rangefilter.filter import DateRangeFilter
 
 
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'city','tour', 'date', 'nationality',
+    list_display = ('first_name', 'last_name', 'city','tour_group','tour', 'date', 'nationality',
                     'phone', 'email', 'profile', 'verified')
     list_display_links = ['first_name', ]
     list_editable = ('verified', )
 
+    def tour_group(self, instance):
+        return instance.tour_registration.tour_group_title
+
     def tour(self, instance):
-        return instance.tour_registration.tour.tour_group.title
+        return instance.tour_registration.title
 
     def date(self, instance):
         return instance.tour_registration.date
@@ -23,11 +26,11 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 class TourRegistrationAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'tour', 'date', 'count', 'price', 'profile', 'verified')
+    list_display = ('pk','title', 'tour_group_title', 'date', 'count', 'price', 'verified_price','verified_count', 'profile', 'verified')
 
-    list_display_links = ['tour', ]
+    list_display_links = ['title', ]
     list_filter = [('date', DateRangeFilter), 'profile__user__username', 'verified']
-    list_editable = ('count', 'price', 'verified')
+    list_editable = ('verified_count', 'verified_price', 'verified')
 
 
 class TourAdmin(admin.ModelAdmin):

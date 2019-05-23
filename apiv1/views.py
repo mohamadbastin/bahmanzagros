@@ -5,7 +5,7 @@ from tourmanagement import settings
 from .serializers import *
 from tour.models import *
 from users.models import UserProfile
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -144,6 +144,17 @@ class TourGroupViewSet(viewsets.ModelViewSet):
 
     queryset = TourGroup.objects.all().order_by('-pk')
     serializer_class = TourGroupSerializer
+
+
+
+
+class ProfileTourRegs(ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = TourRegistrationSerializerGet
+
+    def get_queryset(self):
+        profile = self.request.user.user_profile
+        return profile.tour_regs.all()
 
 
 class TourViewSet(viewsets.ModelViewSet):

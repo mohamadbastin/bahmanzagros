@@ -1,6 +1,6 @@
 from django.db import models
 # from rest_framework import serializers
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from users.models import UserProfile
 from django_jalali.db import models as jmodels
@@ -46,12 +46,19 @@ class Tour(models.Model):
 
 class TourRegistration(models.Model):
     title = models.CharField(max_length=255)
-    tour = models.ForeignKey(Tour, related_name="tour_registrations", on_delete=models.CASCADE)
-    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    tour = models.ForeignKey(Tour, related_name="tour_registrations", on_delete=models.SET_NULL, blank=True, null=True)
+
+    tour_group_title = models.CharField(max_length=255)
+
+    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="tour_regs")
     group = models.BooleanField()
-    count = models.PositiveIntegerField(blank=True, null=True)
     date = models.DateField()
+    count = models.PositiveIntegerField(blank=True, null=True)
     price = models.CharField(max_length=100, blank=True, null=True)
+
+    verified_count = models.PositiveIntegerField(blank=True, null=True)
+    verified_price = models.CharField(max_length=100, blank=True, null=True)
+
     is_persian = models.BooleanField(default=True)
     verified = models.BooleanField(default=False)
 
@@ -64,39 +71,19 @@ class TourRegistration(models.Model):
     def __str__(self):
         return str(self.pk)
 
+
 @receiver(post_save, sender=TourRegistration)
-def tour_reg_post_save(sender, instance, created, **kwargs):
-    try:
-        log = instance.log
-    except Log.DoesNotExist:
-        log = Log()
+def add_tour_title(sender, instance, created, **kwargs):
 
-        log.profile = profile=instance.profile,
-        log.tour_reg = tour_reg=instance,
-        log.tour_title = tour_title=instance.tour.tour_group.title,
-        log.count = instance.quantity
-        log.is_persian = instance.is_persian
-        log.price = instance.price
-        log.status = instance.status
-        log.verified_count = instance
+    if created:
+        instance.tour_group_title = instance.tour.tour_group.title
+        instance.price = instance.tour.price
 
-
-class Log(models.Model):
-    profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="log")
-    tour_reg = models.OneToOneField(TourRegistration, on_delete=models.SET_NULL, null=True, blank=True, related_name="log")
-    tour_title = models.CharField(max_length=255)
-    added_date = models.DateField(auto_now_add=True)
-    count = models.PositiveIntegerField(default=0)
-    is_persian = models.BooleanField(default=True)
-    price = models.CharField(max_length=255)
-    status = models.BooleanField(default=False)
-
-    verified_count = models.PositiveIntegerField(default=0)
-    verified_price = models.CharField(max_length=255)
+        instance.save()
 
 
 class Ticket(models.Model):
-    tour_registration = models.ForeignKey(TourRegistration, on_delete=models.CASCADE, related_name="tickets")
+    tour_registration = models.ForeignKey(TourRegistration, on_delete=models.CASCADE, blank=True,null=True, related_name="tickets")
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
@@ -121,7 +108,7 @@ class Ticket(models.Model):
 
 
 @receiver(post_save, sender=Ticket, dispatch_uid="send_mail")
-def send_mail_verif(sender, instance, **kwargs):
+def send_mail_verif(sender, instance, created, **kwargs):
 
     msg_html = render_to_string('templates/tour/ticket_mail.html', {'ticket': instance})
     msg_plain = render_to_string('tour/ticket_mail.html', {'ticket': instance})

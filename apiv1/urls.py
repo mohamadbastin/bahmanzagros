@@ -17,4 +17,5 @@ urlpatterns = [
     path("tour-variants/<int:variant_id>/registrations/", TourVariantRegistrationList.as_view()),
     path("tour-variants/registrations/create/", TourRegistrationCreate.as_view()),
     path("tour-registrations/<int:tour_reg_id>/tickets/", TourRegistrationTicketsList.as_view()),
+    path("profile/tour-regs/", ProfileTourRegs.as_view()),
 ]
